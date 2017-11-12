@@ -1,5 +1,7 @@
 # THREE.DOMTexture
 Transform DOM to threejs texture
+
+[中文](README_CN.md)
 ## Overview
 ```DOMTexture``` transform DOM to threejs texture with Blob and Foreign object SVG.
 ## Usage
@@ -26,6 +28,7 @@ The methods that ```domTexture``` added on ```THREE.Texture```:
 * ```setHeight``` - set internal DOM height
 * ```setContent``` -  set internal DOM [ ```DOM``` or ```DOM string``` ]
 * ```domInlineStyle``` - write the context style to the element. affect your ```DOM```, useless for ```DOM string```.
+after use, don't forget to set needsUpdate.
 
 ## Caveats
 Due to the use of Foreign object SVG, there are some things to be aware of.
@@ -37,7 +40,7 @@ Due to the use of Foreign object SVG, there are some things to be aware of.
 
 ## TODO
 * binding some DOM events to texture
-* transform ```<img>```
+* transform ```<img>``` and ```<link>```
 
 ## License
 MIT licensed
