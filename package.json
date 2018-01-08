@@ -1,0 +1,31 @@
+{
+  "name": "three.domtexture",
+  "version": "0.0.1",
+  "description": "Transform DOM to threejs texture",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "build-min": "rollup -c rollup.config.min.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jerrykingxyz/THREE.DOMTexture.git"
+  },
+  "author": "jinrui",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jerrykingxyz/THREE.DOMTexture/issues"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "rollup": "^0.53.3",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-cleanup": "^2.0.0",
+    "rollup-plugin-uglify": "^2.0.1"
+  },
+  "homepage": "https://github.com/jerrykingxyz/THREE.DOMTexture#readme"
+}
