@@ -1,6 +1,14 @@
-const cleanup = require('rollup-plugin-cleanup');
-const babel = require('rollup-plugin-babel');
-const rollup = require('rollup');
+const keyword = function () {
+  return {
+    transform (code, id) {
+      if ( /\.js$/.test( id ) === false ) return;
+
+      return {
+        code: code.replace(/let /g, 'var ').replace(/const /g, 'var ')
+      }
+    }
+  }
+}
 
 export default {
   input: 'src/index.js',
@@ -18,10 +26,6 @@ export default {
     include: 'src/**',
   },
   plugins: [
-    babel({
-      plugins: ['external-helpers'],
-      exclude: 'node_modules/**',
-    }),
-    cleanup(),
+    keyword()
   ]
 };
