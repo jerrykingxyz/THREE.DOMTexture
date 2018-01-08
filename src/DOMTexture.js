@@ -1,39 +1,47 @@
 import { Texture } from 'three';
 import DOMCanvas from './DOMCanvas';
 
-class DOMTexture extends Texture {
-  constructor (options, ...args) {
-    const domCanvas = new DOMCanvas(options);
-    super(domCanvas, ...args);
+const DOMTexture = function (options, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding) {
 
-    domCanvas.setRenderComplete((function () {
-      this.version ++;
-    }).bind(this));
-    this.domCanvas = domCanvas;
-    Object.defineProperty(this, 'needsUpdate', {
-      set: function (value) {
-        if (value === true) {
-          domCanvas.render();
-        }
+  const domCanvas = new DOMCanvas(options);
+
+  domCanvas.setRenderComplete((function () {
+    this.version ++;
+  }).bind(this));
+
+  Texture.call(this, domCanvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding);
+
+  this.domCanvas = domCanvas;
+  Object.defineProperty(this, 'needsUpdate', {
+    set: function (value) {
+      if (value === true) {
+        domCanvas.render();
       }
-    })
-  }
+    }
+  })
 
-  setWidth (width) {
+};
+
+DOMTexture.prototype = Object.assign(Object.create( Texture.prototype ), {
+
+  constructor: DOMTexture,
+
+  setWidth: function (width) {
     this.domCanvas.setWidth(width)
-  }
+  },
 
-  setHeight (height) {
+  setHeight: function (height) {
     this.domCanvas.setHeight(height)
-  }
+  },
 
-  setContent (content) {
+  setContent: function (content) {
     this.domCanvas.setContent(content)
-  }
+  },
 
-  domInlineStyle () {
+  domInlineStyle: function () {
     this.domCanvas.contentInlineStyle()
   }
-}
+
+});
 
 export default DOMTexture;

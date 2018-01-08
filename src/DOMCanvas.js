@@ -6,8 +6,8 @@ function inlineStyles(elem) {
   if(supportsCSSText) {
     elem.style.cssText = computedStyle.cssText;
   } else {
-    for(var key in computedStyle) {
-      var value = computedStyle[key];
+    for(const key in computedStyle) {
+      const value = computedStyle[key];
 
       if(isNaN(key * 1) && typeof value !== 'function' && !(/^(cssText|length|parentRule)$/).test(key)) {
         elem.style[key] = value;
@@ -16,63 +16,63 @@ function inlineStyles(elem) {
   }
 }
 
-class DOMCanvas {
+const DOMCanvas = function (option) {
+  option = Object.assign({
+    width: 512,
+    height: 512,
+    content: null
+  }, option);
 
-  constructor (option) {
-    option = Object.assign({
-      width: 512,
-      height: 512,
-      content: null
-    }, option);
+  let canvas = document.createElement('canvas');
+  canvas.width = option.width;
+  canvas.height = option.height;
 
-    var canvas = document.createElement('canvas');
-    canvas.width = option.width;
-    canvas.height = option.height;
+  // generate svg
+  let svg = document.createElement('svg');
+  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  svg.setAttribute('width', option.width);
+  svg.setAttribute('height', option.height);
+  let foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+  foreignObject.setAttribute('width', '100%');
+  foreignObject.setAttribute('height', '100%');
+  let svgContent = document.createElement('div');
+  svgContent.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+  svgContent.innerText = '__content__';
+  foreignObject.appendChild(svgContent);
+  svg.appendChild(foreignObject);
 
-    // generate svg
-    var svg = document.createElement('svg');
-    svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    svg.setAttribute('width', option.width);
-    svg.setAttribute('height', option.height);
-    var foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
-    foreignObject.setAttribute('width', '100%');
-    foreignObject.setAttribute('height', '100%');
-    var svgContent = document.createElement('div');
-    svgContent.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
-    svgContent.innerText = '__content__';
-    foreignObject.appendChild(svgContent);
-    svg.appendChild(foreignObject);
+  // generate img
+  let img = document.createElement('img');
+  img.onload = (function () {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    this.ctx.drawImage(img, 0, 0);
+    if (typeof this.renderComplete === 'function') {
+      this.renderComplete()
+    }
+  }).bind(this);
 
-    // generate img
-    var img = document.createElement('img');
-    img.onload = (function () {
-      this.ctx.clearRect(0, 0, this.width, this.height);
-      this.ctx.drawImage(img, 0, 0);
-      if (typeof this.renderComplete === 'function') {
-        this.renderComplete()
-      }
-    }).bind(this);
+  // generate file reader
+  let reader = new FileReader();
+  reader.onloadend = function () {
+    img.src = reader.result;
+  };
 
-    // generate file reader
-    var reader = new FileReader();
-    reader.onloadend = function () {
-      img.src = reader.result;
-    };
+  // export
+  this.canvas = canvas;
+  this.ctx = canvas.getContext('2d');
+  this.svg = svg;
+  this.img = img;
+  this.reader = reader;
+  this.renderComplete = option.renderComplete;
 
-    // export
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
-    this.svg = svg;
-    this.img = img;
-    this.reader = reader;
-    this.renderComplete = option.renderComplete;
+  this.width = option.width;
+  this.height = option.height;
+  this.content = option.content;
+};
 
-    this.width = option.width;
-    this.height = option.height;
-    this.content = option.content;
-  }
+DOMCanvas.prototype = {
 
-  setWidth (width) {
+  setWidth: function (width) {
     if (typeof width === 'number') {
       this.width = width;
       this.canvas.width = width;
@@ -80,9 +80,9 @@ class DOMCanvas {
     }
 
     return this;
-  }
+  },
 
-  setHeight (height) {
+  setHeight: function (height) {
     if (typeof height === 'number') {
       this.height = height;
       this.canvas.height = height;
@@ -90,47 +90,47 @@ class DOMCanvas {
     }
 
     return this;
-  }
+  },
 
-  setContent (content) {
+  setContent: function (content) {
     this.content = content;
 
     return this;
-  }
+  },
 
-  setRenderComplete (fn) {
+  setRenderComplete: function (fn) {
     this.renderComplete = fn;
 
     return this;
-  }
+  },
 
-  contentInlineStyle () {
+  contentInlineStyle: function () {
     if (this.content instanceof Element) {
-      var content = this.content;
+      let content = this.content;
       inlineStyles(content);
 
       content.querySelectorAll('*').forEach(inlineStyles)
     }
 
     return this;
-  }
+  },
 
-  render (renderContent) {
+  render: function (renderContent) {
     if (!renderContent) {
       renderContent = this.content
     }
 
-    var content = '';
+    let content = '';
     if (typeof renderContent === 'string') {
       content = renderContent;
     } else if (renderContent instanceof Element) {
       content = renderContent.outerHTML;
     }
 
-    var data = this.svg.outerHTML.replace('__content__', content);
-    var blob = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
+    let data = this.svg.outerHTML.replace('__content__', content);
+    let blob = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
     this.reader.readAsDataURL(blob);
   }
-}
+};
 
 export default DOMCanvas;
