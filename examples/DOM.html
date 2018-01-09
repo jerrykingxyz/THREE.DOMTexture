@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOMTexture example</title>
+  <!-- this style is useless for the texture -->
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+    #dom {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/three@0.89.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.89.0/examples/js/controls/TrackballControls.js"></script>
+<script src="../dist/DOMTexture.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quick-three@1.0.2/Quick3D.min.js"></script>
+<div id="dom">
+  <!-- this style will affect the texture -->
+  <style>
+    .container {
+      background: white;
+      width: 500px;
+      height: 500px;
+      line-height: 500px;
+      text-align: center;
+    }
+  </style>
+  <div class="container">
+    <div>a example for DOMTexture</div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var quick3d = new Quick3D();
+
+    var texture = new THREE.DOMTexture({
+      content: document.getElementById('dom')
+    });
+    texture.needsUpdate = true;
+
+    var plane = new THREE.PlaneGeometry(5, 5);
+    var material = new THREE.MeshBasicMaterial({map: texture});
+    var mesh = new THREE.Mesh(plane, material);
+
+    quick3d.scene.add(mesh);
+  })
+</script>
+</body>
+</html>
