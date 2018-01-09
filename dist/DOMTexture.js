@@ -146,7 +146,7 @@
 	    this.version ++;
 	  }).bind(this));
 
-	  three.Texture.call(this, domCanvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding);
+	  three.Texture.call(this, domCanvas.canvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding);
 
 	  this.domCanvas = domCanvas;
 	  Object.defineProperty(this, 'needsUpdate', {

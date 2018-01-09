@@ -9,7 +9,7 @@ const DOMTexture = function (options, mapping, wrapS, wrapT, magFilter, minFilte
     this.version ++;
   }).bind(this));
 
-  Texture.call(this, domCanvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding);
+  Texture.call(this, domCanvas.canvas, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding);
 
   this.domCanvas = domCanvas;
   Object.defineProperty(this, 'needsUpdate', {
