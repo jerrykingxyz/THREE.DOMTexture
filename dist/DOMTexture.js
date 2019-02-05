@@ -42,6 +42,7 @@
 	  foreignObject.setAttribute('height', '100%');
 	  var svgContent = document.createElement('div');
 	  svgContent.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+	  svgContent.setAttribute('style', 'width:100%;height:100%;');
 	  svgContent.innerText = '__content__';
 	  foreignObject.appendChild(svgContent);
 	  svg.appendChild(foreignObject);
