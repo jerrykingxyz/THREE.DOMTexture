@@ -17,6 +17,9 @@ function inlineStyles(elem) {
 }
 
 const DOMCanvas = function (option) {
+  if (typeof option === 'string' || option instanceof Element) {
+    option = { content: option }
+  }
   option = Object.assign({
     width: 512,
     height: 512,

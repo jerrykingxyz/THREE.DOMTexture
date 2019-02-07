@@ -25,7 +25,7 @@
     .container {
       background: white;
       width: 500px;
-      height: 500px;
+      height: 100%;
       line-height: 500px;
       text-align: center;
     }
@@ -38,9 +38,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     var quick3d = new Quick3D();
 
-    var texture = new THREE.DOMTexture({
-      content: document.getElementById('dom')
-    });
+    var texture = new THREE.DOMTexture(document.getElementById('dom'));
     texture.needsUpdate = true;
 
     var plane = new THREE.PlaneGeometry(5, 5);

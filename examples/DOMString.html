@@ -38,9 +38,7 @@
     var styleCode = document.getElementById('style').innerText;
     var domCode = document.getElementById('dom').innerText;
 
-    var texture = new THREE.DOMTexture({
-      content: styleCode + domCode
-    });
+    var texture = new THREE.DOMTexture(styleCode + domCode);
     texture.needsUpdate = true;
 
     var plane = new THREE.PlaneGeometry(5, 5);
