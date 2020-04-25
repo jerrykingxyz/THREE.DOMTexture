@@ -1,5 +1,5 @@
 .idea/
-example/
+examples/
 node_modules/
 src/
 rollup.config.js
