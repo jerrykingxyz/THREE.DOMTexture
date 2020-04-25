@@ -1,6 +1,6 @@
 {
   "name": "three.domtexture",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Transform DOM to threejs texture",
   "main": "dist/DOMtexture.js",
   "browser": "dist/DOMTexture.min.js",
