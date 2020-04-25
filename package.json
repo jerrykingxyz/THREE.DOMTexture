@@ -2,11 +2,11 @@
   "name": "three.domtexture",
   "version": "0.0.2",
   "description": "Transform DOM to threejs texture",
-  "main": "index.js",
+  "main": "dist/DOMtexture.js",
+  "browser": "dist/DOMTexture.min.js",
+  "module": "dist/DOMtexture.mjs",
   "scripts": {
     "build": "rollup -c",
-    "build-min": "rollup -c rollup.config.min.js",
-    "build-all": "npm run build && npm run build-min",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,7 +20,11 @@
   },
   "devDependencies": {
     "rollup": "^0.53.3",
-    "rollup-plugin-uglify": "^2.0.1"
+    "rollup-plugin-uglify": "^2.0.1",
+    "three": "^0.115.0"
+  },
+  "peerDependencies": {
+    "three": "^0.115.0"
   },
   "homepage": "https://github.com/jerrykingxyz/THREE.DOMTexture#readme"
 }
