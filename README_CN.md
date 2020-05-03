@@ -3,6 +3,12 @@
 ## 概述
 ```DOMTexture``` 通过Blob 和 Foreign object SVG对象将 DOM 转化为纹理.
 ## 用法
+通过npm引入 ```npm install three-dom-texture```
+```javascript
+import { DOMTexture } from 'three-dom-texture'
+// or
+const { DOMTexture } = require('three-dom-texture')
+```
 引入script
 ```html
 <script src="three.min.js"></script>

@@ -5,7 +5,13 @@ Transform DOM to threejs texture
 ## Overview
 ```DOMTexture``` transform DOM to threejs texture with Blob and Foreign object SVG.
 ## Usage
-Include script
+install with ```npm install three-dom-texture```
+```javascript
+import { DOMTexture } from 'three-dom-texture'
+// or
+const { DOMTexture } = require('three-dom-texture')
+```
+include script
 ```html
 <script src="three.min.js"></script>
 <script src="DOMTexture.min.js"></script>
