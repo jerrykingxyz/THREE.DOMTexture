@@ -1,4 +1,5 @@
 .idea/
+.log/
 examples/
 node_modules/
 src/
