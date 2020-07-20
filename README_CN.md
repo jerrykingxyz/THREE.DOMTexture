@@ -28,9 +28,10 @@ const { DOMTexture } = require('three-dom-texture')
   new THREE.DOMTexture('<div>...</div>')
   // object
   new THREE.DOMTexture({
-      width: <number> // 内部 DOM 的宽度, 默认值：512
-      height: <number> // 内部 DOM 的高度, 默认值： 512
-      content: <DOM | DOMString> // 内部 DOM
+      width: <number>, // 内部 DOM 的宽度, 默认值：512
+      height: <number>, // 内部 DOM 的高度, 默认值： 512
+      content: <DOM | DOMString>, // 内部 DOM
+      dpr: <number>, // canvas devicePixelRatio, 默认值： window.devicePixelRatio
   })
 ```
 
@@ -38,8 +39,10 @@ const { DOMTexture } = require('three-dom-texture')
 * ```setWidth``` - 设置内部 DOM 的宽度
 * ```setHeight``` - 设置内部 DOM 的高度
 * ```setContent``` -  设置内部 DOM [ ```DOM``` 或 ```DOMString``` ]
+* ```setPDR``` - 设置内部canvas devicePixelRatio
 * ```domInlineStyle``` - 将环境中的样式写入到 DOM 中. 会影响 ```DOM``` 本身, 对 ```DOMString```无效果.
-函数调用后需要更新纹理
+
+上述函数调用后需要通过设置needsUpdate更新纹理
 
 ## 注意事项
 因为使用了Foreign object SVG，有一些事项需要注意

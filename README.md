@@ -30,9 +30,10 @@ the first parameter is ```options``` to set DOM, which can be a ```DOM```, ```DO
   new THREE.DOMTexture('<div>...</div>')
   // object
   new THREE.DOMTexture({
-      width: <number> // internal DOM width, default 512
-      height: <number> // internal DOM height, default 512
-      content: <DOM | DOMString> // internal DOM
+      width: <number>, // internal DOM width, default 512
+      height: <number>, // internal DOM height, default 512
+      content: <DOM | DOMString>, // internal DOM
+      dpr: <number>, // canvas devicePixelRatio, default window.devicePixelRatio
   })
 ```
 
@@ -40,8 +41,10 @@ The methods that ```domTexture``` added on ```THREE.Texture```:
 * ```setWidth``` - set internal DOM width
 * ```setHeight``` - set internal DOM height
 * ```setContent``` -  set internal DOM [ ```DOM``` or ```DOMString``` ]
+* ```setDPR``` - set internal Canvas DPR
 * ```domInlineStyle``` - write the context style to the element. affect your ```DOM```, useless for ```DOMString```.
-after use, don't forget to set needsUpdate.
+
+after use these methods, don't forget to set needsUpdate.
 
 ## Caveats
 Due to the use of Foreign object SVG, there are some things to be aware of.
