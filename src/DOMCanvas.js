@@ -27,14 +27,18 @@ const DOMCanvas = function(option) {
     {
       width: 512,
       height: 512,
-      content: null
+      content: null,
+      dpr: window.devicePixelRatio || 1
     },
     option
   );
 
+  const dpr = option.dpr;
   const canvas = document.createElement("canvas");
-  canvas.width = option.width;
-  canvas.height = option.height;
+  canvas.width = option.width * dpr;
+  canvas.height = option.height * dpr;
+  const ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
 
   // generate svg
   const svg = document.createElement("svg");
@@ -72,7 +76,7 @@ const DOMCanvas = function(option) {
 
   // export
   this.canvas = canvas;
-  this.ctx = canvas.getContext("2d");
+  this.ctx = ctx;
   this.svg = svg;
   this.img = img;
   this.reader = reader;
@@ -81,6 +85,7 @@ const DOMCanvas = function(option) {
   this.width = option.width;
   this.height = option.height;
   this.content = option.content;
+  this.dpr = dpr;
 };
 
 DOMCanvas.prototype = {
@@ -89,7 +94,7 @@ DOMCanvas.prototype = {
   setWidth: function(width) {
     if (typeof width === "number") {
       this.width = width;
-      this.canvas.width = width;
+      this.canvas.width = width * this.dpr;
       this.svg.setAttribute("width", width);
     }
 
@@ -99,7 +104,7 @@ DOMCanvas.prototype = {
   setHeight: function(height) {
     if (typeof height === "number") {
       this.height = height;
-      this.canvas.height = height;
+      this.canvas.height = height * this.dpr;
       this.svg.setAttribute("height", height);
     }
 
@@ -108,6 +113,16 @@ DOMCanvas.prototype = {
 
   setContent: function(content) {
     this.content = content;
+
+    return this;
+  },
+
+  setDPR: function(dpr) {
+    if (typeof dpr === "number") {
+      this.canvas.width = this.width * dpr;
+      this.canvas.height = this.height * dpr;
+      this.ctx.scale(dpr, dpr);
+    }
 
     return this;
   },

@@ -60,6 +60,10 @@ DOMTexture.prototype = Object.assign(Object.create(Texture.prototype), {
     this.domCanvas.setContent(content);
   },
 
+  setDPR: function(dpr) {
+    this.domCanvas.setDPR(dpr);
+  },
+
   domInlineStyle: function() {
     this.domCanvas.contentInlineStyle();
   }
