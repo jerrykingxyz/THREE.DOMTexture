@@ -1,7 +1,9 @@
 import { Texture } from "three";
 
 type TContent = string | null | HTMLElement;
-type TOption = TContent | { width: number; height: number; content: TContent };
+type TOption =
+  | TContent
+  | { width?: number; height?: number; content: TContent; dpr?: number };
 
 declare class DOMCanvas {
   canvas: HTMLCanvasElement;
@@ -12,11 +14,13 @@ declare class DOMCanvas {
   onRenderComplete?: () => void;
   width: number;
   height: number;
-  content?: TContent;
+  content: TContent;
+  dpr: number;
 
   setWidth(width: number): DOMCanvas;
   setHeight(height: number): DOMCanvas;
-  setContent(content?: TContent): DOMCanvas;
+  setContent(content: TContent): DOMCanvas;
+  setDPR(dpr: number): DOMCanvas;
   setOnRenderComplete(fn?: () => void): DOMCanvas;
   contentInlineStyle(): DOMCanvas;
   render(content?: TContent): void;
@@ -29,6 +33,7 @@ declare class DOMTexture extends Texture {
   setWidth(width: number): void;
   setHeight(height: number): void;
   setContent(content: string): void;
+  setDPR(dpr: number): void;
   domInlineStyle(): void;
   constructor(options: TOption);
 }
