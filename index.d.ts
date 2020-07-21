@@ -10,8 +10,6 @@ declare class DOMCanvas {
   ctx: CanvasRenderingContext2D;
   svg: HTMLElement;
   img: HTMLImageElement;
-  reader: FileReader;
-  onRenderComplete?: () => void;
   width: number;
   height: number;
   content: TContent;
@@ -21,9 +19,8 @@ declare class DOMCanvas {
   setHeight(height: number): DOMCanvas;
   setContent(content: TContent): DOMCanvas;
   setDPR(dpr: number): DOMCanvas;
-  setOnRenderComplete(fn?: () => void): DOMCanvas;
   contentInlineStyle(): DOMCanvas;
-  render(content?: TContent): void;
+  render(content?: TContent): Promise<void>;
 
   constructor(option?: TOption);
 }
