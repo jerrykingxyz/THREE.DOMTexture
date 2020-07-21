@@ -15,12 +15,6 @@ const DOMTexture = function(
 ) {
   const domCanvas = new DOMCanvas(options);
 
-  domCanvas.setOnRenderComplete(
-    function() {
-      this.version++;
-    }.bind(this)
-  );
-
   Texture.call(
     this,
     domCanvas.canvas,
@@ -39,7 +33,11 @@ const DOMTexture = function(
   Object.defineProperty(this, "needsUpdate", {
     set: function(value) {
       if (value === true) {
-        domCanvas.render();
+        domCanvas.render().then(
+          function() {
+            this.version++;
+          }.bind(this)
+        );
       }
     }
   });

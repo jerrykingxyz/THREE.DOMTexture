@@ -60,27 +60,12 @@ const DOMCanvas = function(option) {
 
   // generate img
   const img = document.createElement("img");
-  img.onload = function() {
-    this.ctx.clearRect(0, 0, this.width, this.height);
-    this.ctx.drawImage(img, 0, 0);
-    if (typeof this.onRenderComplete === "function") {
-      this.onRenderComplete();
-    }
-  }.bind(this);
-
-  // generate file reader
-  const reader = new FileReader();
-  reader.onloadend = function() {
-    img.src = reader.result;
-  };
 
   // export
   this.canvas = canvas;
   this.ctx = ctx;
   this.svg = svg;
   this.img = img;
-  this.reader = reader;
-  this.onRenderComplete = option.onRenderComplete;
 
   this.width = option.width;
   this.height = option.height;
@@ -127,12 +112,6 @@ DOMCanvas.prototype = {
     return this;
   },
 
-  setOnRenderComplete: function(fn) {
-    this.onRenderComplete = fn;
-
-    return this;
-  },
-
   contentInlineStyle: function() {
     if (this.content instanceof Element) {
       const content = this.content;
@@ -157,8 +136,18 @@ DOMCanvas.prototype = {
     }
 
     const data = this.svg.outerHTML.replace("__content__", content);
-    const blob = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
-    this.reader.readAsDataURL(blob);
+    const img = this.img;
+    const ctx = this.ctx;
+
+    return new Promise(function(res) {
+      img.onload = function() {
+        ctx.clearRect(0, 0, this.width, this.height);
+        ctx.drawImage(img, 0, 0);
+        img.onload = null;
+        res();
+      };
+      img.src = "data:image/svg+xml;utf-8," + data;
+    });
   }
 };
 
