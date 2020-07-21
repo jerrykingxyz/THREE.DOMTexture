@@ -146,7 +146,7 @@ DOMCanvas.prototype = {
         img.onload = null;
         res();
       };
-      img.src = "data:image/svg+xml;utf-8," + data;
+      img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(data);
     });
   }
 };
