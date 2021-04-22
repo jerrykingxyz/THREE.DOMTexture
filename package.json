@@ -21,10 +21,10 @@
   "devDependencies": {
     "rollup": "^0.53.3",
     "rollup-plugin-uglify": "^2.0.1",
-    "three": "^0.115.0"
+    "three": "^0.125.0"
   },
   "peerDependencies": {
-    "three": "^0.115.0"
+    "three": "^0.125.0"
   },
   "homepage": "https://github.com/jerrykingxyz/THREE.DOMTexture#readme"
 }
