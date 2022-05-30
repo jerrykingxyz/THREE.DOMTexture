@@ -1,70 +1,44 @@
 import { Texture } from "three";
-import DOMCanvas from "./DOMCanvas";
+import { DOMCanvas } from "./DOMCanvas";
 
-const DOMTexture = function(
-  options,
-  mapping,
-  wrapS,
-  wrapT,
-  magFilter,
-  minFilter,
-  format,
-  type,
-  anisotropy,
-  encoding
-) {
-  const domCanvas = new DOMCanvas(options);
+export class DOMTexture extends Texture {
+  constructor(options, ...args) {
+    const domCanvas = new DOMCanvas(options);
 
-  Texture.call(
-    this,
-    domCanvas.canvas,
-    mapping,
-    wrapS,
-    wrapT,
-    magFilter,
-    minFilter,
-    format,
-    type,
-    anisotropy,
-    encoding
-  );
+    super(domCanvas.canvas, ...args);
 
-  this.domCanvas = domCanvas;
-  Object.defineProperty(this, "needsUpdate", {
-    set: function(value) {
-      if (value === true) {
-        domCanvas.render().then(
-          function() {
-            this.version++;
-          }.bind(this)
-        );
-      }
+    this.domCanvas = domCanvas;
+  }
+
+  set needsUpdate(value) {
+    if (value !== true) {
+      return;
     }
-  });
-};
+    this.domCanvas.render().then(
+      function () {
+        this.version++;
+        this.source.needUpdate = true;
+      }.bind(this)
+    );
+  }
 
-DOMTexture.prototype = Object.assign(Object.create(Texture.prototype), {
-  constructor: DOMTexture,
-
-  setWidth: function(width) {
+  setWidth(width) {
     this.domCanvas.setWidth(width);
-  },
+  }
 
-  setHeight: function(height) {
+  setHeight(height) {
     this.domCanvas.setHeight(height);
-  },
+  }
 
-  setContent: function(content) {
+  setContent(content) {
     this.domCanvas.setContent(content);
-  },
+  }
 
-  setDPR: function(dpr) {
+  setDPR(dpr) {
     this.domCanvas.setDPR(dpr);
-  },
+  }
 
-  domInlineStyle: function() {
+  domInlineStyle() {
     this.domCanvas.contentInlineStyle();
   }
-});
-
-export default DOMTexture;
+}

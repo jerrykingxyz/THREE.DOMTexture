@@ -2,5 +2,5 @@
 .log/
 examples/
 node_modules/
-src/
+.prettierrc
 rollup.config.js

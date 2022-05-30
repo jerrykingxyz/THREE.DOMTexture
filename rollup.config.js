@@ -1,56 +1,33 @@
-import uglify from "rollup-plugin-uglify";
+import { terser } from "rollup-plugin-terser";
 import pkg from "./package.json";
-
-const keyword = function() {
-  return {
-    transform(code, id) {
-      if (/\.js$/.test(id) === false) return;
-
-      return {
-        code: code.replace(/let /g, "var ").replace(/const /g, "var ")
-      };
-    }
-  };
-};
-
-const common = {
-  input: "src/index.js",
-  indent: "\t",
-  external: ["three"],
-  globals: {
-    three: "THREE"
-  }
-};
 
 export default [
   // nodejs & browsers
   {
-    ...common,
+    input: "src/index.js",
+    indent: "\t",
     output: {
       name: "DOMTexture",
       file: pkg.main,
-      format: "umd"
+      format: "umd",
+      globals: {
+        three: "THREE"
+      }
     },
-    plugins: [keyword()]
+    plugins: []
   },
   // browsers min
   {
-    ...common,
+    input: "src/index.js",
+    indent: "\t",
     output: {
       name: "DOMTexture",
       file: pkg.browser,
-      format: "umd"
+      format: "umd",
+      globals: {
+        three: "THREE"
+      }
     },
-    plugins: [keyword(), uglify()]
-  },
-  // mjs
-  {
-    ...common,
-    output: {
-      name: "DOMTexture",
-      file: pkg.module,
-      format: "es"
-    },
-    plugins: [keyword()]
+    plugins: [terser()]
   }
 ];
