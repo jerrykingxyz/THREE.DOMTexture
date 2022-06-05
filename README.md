@@ -18,7 +18,7 @@ include script
 ```
 create texture
 ```javascript
-    var domTexture = new THREE.DOMTexure(options, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy)
+    var domTexture = new THREE.DOMTexure(options, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding)
     // don't forget update texture when you update the dom
     domTexture.needsUpdate = true
 ```
@@ -38,10 +38,8 @@ the first parameter is ```options``` to set DOM, which can be a ```DOM```, ```DO
 ```
 
 The methods that ```domTexture``` added on ```THREE.Texture```:
-* ```setWidth``` - set internal DOM width
-* ```setHeight``` - set internal DOM height
+* ```updateSize``` - set innernal DOM width, height, dpr. this method will return a new DOMTexure instance and dispose current instance.
 * ```setContent``` -  set internal DOM [ ```DOM``` or ```DOMString``` ]
-* ```setDPR``` - set internal Canvas DPR
 * ```domInlineStyle``` - write the context style to the element. affect your ```DOM```, useless for ```DOMString```.
 
 after use these methods, don't forget to set needsUpdate.
@@ -53,10 +51,6 @@ Due to the use of Foreign object SVG, there are some things to be aware of.
     - if you want to ```<link>``` some stylesheet, you can use ```<style>``` and write CSS in it.
     - if you want to use ```<img>```, you can use ```<div>``` and set the image as background. __--WARN: The background can not be a URL, but it can be ```base64```__
 * ```DOMTexture``` can get style inside the ```<style>``` of the __internal DOM__, but can not get in the document context. you can run ```domTexture.domInlineStyle()``` to write the context style to the element. __--WARN: ```domInlineStyle``` will affect your DOM, useless for ```DOMString```__
-
-## TODO
-* binding some DOM events to texture
-* transform ```<img>``` and ```<link>```
 
 ## License
 MIT licensed

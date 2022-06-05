@@ -1,7 +1,7 @@
 # THREE.DOMTexture
 将 DOM 转化成 threejs 纹理
 ## 概述
-```DOMTexture``` 通过Blob 和 Foreign object SVG对象将 DOM 转化为纹理.
+```DOMTexture``` 通过 Blob 和 Foreign object SVG 对象将 DOM 转化为纹理.
 ## 用法
 通过npm引入 ```npm install three-dom-texture```
 ```javascript
@@ -16,7 +16,7 @@ const { DOMTexture } = require('three-dom-texture')
 ```
 创建纹理
 ```javascript
-    var domTexture = new THREE.DOMTexure(options, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy)
+    var domTexture = new THREE.DOMTexure(options, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding)
     // 在纹理创建和DOM更新的时候别忘了设置needsUpdate去更新纹理
     domTexture.needsUpdate = true;
 ```
@@ -36,10 +36,8 @@ const { DOMTexture } = require('three-dom-texture')
 ```
 
 ```domTexture``` 在 ```THREE.Texture``` 实例基础上新增的方法:
-* ```setWidth``` - 设置内部 DOM 的宽度
-* ```setHeight``` - 设置内部 DOM 的高度
+* ```updateSize``` - 设置内部 DOM 的宽度、 高度、 dpr。这个方法会返回一个新的 DOMTexture 实例，并且销毁掉当前的 DOMTexure
 * ```setContent``` -  设置内部 DOM [ ```DOM``` 或 ```DOMString``` ]
-* ```setPDR``` - 设置内部canvas devicePixelRatio
 * ```domInlineStyle``` - 将环境中的样式写入到 DOM 中. 会影响 ```DOM``` 本身, 对 ```DOMString```无效果.
 
 上述函数调用后需要通过设置needsUpdate更新纹理
@@ -51,10 +49,6 @@ const { DOMTexture } = require('three-dom-texture')
     - 如果你想要使用```<link>``` 来引入一些样式, 你可以使用```<style>```并且将CSS内联进去.
     - 如果你想要使用```<img>```, 你可以设置一个```<div>``` 将图片设置为它的背景. __--WARN: 背景图片不能为url，但可以是```base64```__
 * ```DOMTexture``` 可以获取到内部DOM中的 ```<style>``` , 但是无法获取到环境中的. 你可以调用```domTexture.domInlineStyle()``` 将环境样式内联到 DOM 上. __--WARN: ```domInlineStyle``` 会影响到你的DOM, 在内部为 ```DOMString``` 的情况时无效__
-
-## TODO
-* 将一些DOM上的事件绑定到纹理上
-* 以转化的方式处理 ```<img>``` 和 ```<link>``` 等标签
 
 ## License
 MIT licensed

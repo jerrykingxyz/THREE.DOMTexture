@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOMTexture example</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.140.0/examples/js/controls/TrackballControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three-dom-texture"></script>
+<script src="https://cdn.jsdelivr.net/npm/quick-three"></script>
+<script id="style" type="application/xml">
+  <style>
+    .container {
+      background: white;
+      width: 512px;
+      height: 100%;
+      line-height: 512px;
+      text-align: center;
+    }
+  </style>
+</script>
+<script id="dom" type="application/xml">
+  <div class="container">
+    <div>a example for DOMTexture, __index__</div>
+  </div>
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var quick3d = new Quick3D();
+
+    var genDomCode = (function() {
+      var styleCode = document.getElementById('style').innerText;
+      var domCode = document.getElementById('dom').innerText;
+      var index = 0
+      return function() {
+        var res = styleCode + domCode.replace("__index__", index)
+        index ++;
+        return res
+      }
+    })()
+
+    var texture = new THREE.DOMTexture(genDomCode());
+    texture.needsUpdate = true;
+
+    var plane = new THREE.PlaneGeometry(5, 5);
+    var material = new THREE.MeshBasicMaterial({map: texture});
+    var mesh = new THREE.Mesh(plane, material);
+
+    quick3d.scene.add(mesh);
+
+    document.querySelector('canvas').addEventListener('click', () => {
+      // update size will generate new texture
+      texture = texture.updateSize({ width: texture.domCanvas.width - 10 })
+      texture.setContent(genDomCode())
+      texture.needsUpdate = true
+      material.map = texture
+    })
+  })
+</script>
+</body>
+</html>

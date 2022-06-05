@@ -1,9 +1,20 @@
-import { Texture } from "three";
+import {
+  Texture,
+  Mapping,
+  Wrapping,
+  TextureFilter,
+  PixelFormat,
+  TextureDataType,
+  TextureEncoding,
+} from "three";
 
-type TContent = string | null | HTMLElement;
-type TOption =
-  | TContent
-  | { width?: number; height?: number; content: TContent; dpr?: number };
+type TContent = string | HTMLElement;
+type TSizeParams = {
+  width?: number;
+  height?: number;
+  dpr?: number;
+};
+type TInitOption = TContent | (TSizeParams & { content: TContent });
 
 declare class DOMCanvas {
   canvas: HTMLCanvasElement;
@@ -15,24 +26,34 @@ declare class DOMCanvas {
   content: TContent;
   dpr: number;
 
-  setWidth(width: number): DOMCanvas;
-  setHeight(height: number): DOMCanvas;
+  setSize(params: TSizeParams): DOMCanvas;
   setContent(content: TContent): DOMCanvas;
-  setDPR(dpr: number): DOMCanvas;
   contentInlineStyle(): DOMCanvas;
-  render(content?: TContent): Promise<void>;
+  clone(): DOMCanvas;
+  render(): Promise<void>;
 
-  constructor(option?: TOption);
+  constructor(option?: TInitOption);
 }
 
 declare class DOMTexture extends Texture {
   domCanvas: DOMCanvas;
-  setWidth(width: number): void;
-  setHeight(height: number): void;
+
+  updateSize(params: TSizeParams): DOMTexture;
   setContent(content: string): void;
-  setDPR(dpr: number): void;
   domInlineStyle(): void;
-  constructor(options: TOption);
+
+  constructor(
+    options: TInitOption,
+    mapping?: Mapping,
+    wrapS?: Wrapping,
+    wrapT?: Wrapping,
+    magFilter?: TextureFilter,
+    minFilter?: TextureFilter,
+    format?: PixelFormat,
+    type?: TextureDataType,
+    anisotropy?: number,
+    encoding?: TextureEncoding
+  );
 }
 
 export { DOMCanvas, DOMTexture };

@@ -28,7 +28,7 @@ export class DOMCanvas {
       {
         width: 512,
         height: 512,
-        content: null,
+        content: "",
         dpr: window.devicePixelRatio || 1,
       },
       option
@@ -74,38 +74,26 @@ export class DOMCanvas {
     this.dpr = dpr;
   }
 
-  setWidth(width) {
-    if (typeof width === "number") {
-      this.width = width;
-      this.canvas.width = width * this.dpr;
-      this.svg.setAttribute("width", width);
-    }
+  setSize(params) {
+    const width = params.width || this.width;
+    const height = params.height || this.height;
+    const dpr = params.pdr || this.dpr;
 
-    return this;
-  }
+    this.canvas.width = width * dpr;
+    this.canvas.height = height * dpr;
+    this.ctx.scale(dpr, dpr);
 
-  setHeight(height) {
-    if (typeof height === "number") {
-      this.height = height;
-      this.canvas.height = height * this.dpr;
-      this.svg.setAttribute("height", height);
-    }
+    this.svg.setAttribute("width", width);
+    this.svg.setAttribute("height", height);
 
+    this.width = width;
+    this.height = height;
+    this.dpr = dpr;
     return this;
   }
 
   setContent(content) {
     this.content = content;
-
-    return this;
-  }
-
-  setDPR(dpr) {
-    if (typeof dpr === "number") {
-      this.canvas.width = this.width * dpr;
-      this.canvas.height = this.height * dpr;
-      this.ctx.scale(dpr, dpr);
-    }
 
     return this;
   }
@@ -121,17 +109,18 @@ export class DOMCanvas {
     return this;
   }
 
-  render(renderContent) {
-    if (!renderContent) {
-      renderContent = this.content;
-    }
+  clone() {
+    return new DOMCanvas({
+      width: this.width,
+      height: this.height,
+      dpr: this.dpr,
+      content: this.content,
+    });
+  }
 
-    let content = "";
-    if (typeof renderContent === "string") {
-      content = renderContent;
-    } else if (renderContent instanceof Element) {
-      content = renderContent.outerHTML;
-    }
+  render() {
+    const content =
+      this.content instanceof Element ? this.content.outerHTML : this.content;
 
     const data = this.svg.outerHTML.replace("__content__", content);
     const img = this.img;

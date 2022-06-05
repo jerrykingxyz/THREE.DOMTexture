@@ -3,13 +3,30 @@ import { DOMCanvas } from "./DOMCanvas";
 
 export class DOMTexture extends Texture {
   constructor(options, ...args) {
-    const domCanvas = new DOMCanvas(options);
+    const domCanvas =
+      options instanceof DOMCanvas ? options : new DOMCanvas(options);
 
     super(domCanvas.canvas, ...args);
 
     this.domCanvas = domCanvas;
   }
 
+  updateSize(params) {
+    this.domCanvas.setSize(params);
+    const newTexture = new DOMTexture(this.domCanvas).copy(this);
+    this.dispose();
+    return newTexture;
+  }
+
+  setContent(content) {
+    this.domCanvas.setContent(content);
+  }
+
+  domInlineStyle() {
+    this.domCanvas.contentInlineStyle();
+  }
+
+  // overwrite Texture method
   set needsUpdate(value) {
     if (value !== true) {
       return;
@@ -17,28 +34,14 @@ export class DOMTexture extends Texture {
     this.domCanvas.render().then(
       function () {
         this.version++;
-        this.source.needUpdate = true;
+        this.source.needsUpdate = true;
       }.bind(this)
     );
   }
 
-  setWidth(width) {
-    this.domCanvas.setWidth(width);
-  }
-
-  setHeight(height) {
-    this.domCanvas.setHeight(height);
-  }
-
-  setContent(content) {
-    this.domCanvas.setContent(content);
-  }
-
-  setDPR(dpr) {
-    this.domCanvas.setDPR(dpr);
-  }
-
-  domInlineStyle() {
-    this.domCanvas.contentInlineStyle();
+  clone() {
+    const newTexture = new DOMTexture(this.domCanvas.clone());
+    newTexture.copy({ ...this, source: newTexture.source });
+    return newTexture;
   }
 }
